@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{%block content%}
+	<script type="text/javascript">
+		d3.select("#loginbutton")
+		.attr("class", "");
+		d3.select("#homebutton")
+		.attr("class", "active");
+	</script>
+    {% if session['handle'] == None %}
+        <h2>You have not set a handle. <br></h2>
+        <h3><a href="/handle">Set a handle.</a></h3>
+    {% endif %}
+{%endblock%}

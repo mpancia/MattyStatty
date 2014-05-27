@@ -1,0 +1,4 @@
+*.pyc
+flask
+*~
+.DS_Store

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<meta charset=”utf-8”> 
+<link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+  <head>
+    {% if session['handle'] != None %}
+    <title>{{session['handle']}}'s tweets</title>
+    {% else %}
+    <title>mattystatty tweet analysis</title>
+    {% endif %}
+  </head>
+  <body>
+    <div class ="container">
+    <h1>mattystatty twitter analysis</h1>
+    <div class="navbar">
+      <div class ="navbar-inner">
+        <ul class="nav">
+          <li id ="homebutton"><a href="/">Home</a></li>
+          <li id = "loginbutton"><a href="/handle">Set Handle</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span2">
+          <ul class="nav nav-list">
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               Analysis
+               <b class="caret"></b>
+           </a>
+          <ul class="dropdown-menu">
+          <li><a href="/letter">Letter Frequency</a></li>
+          <li><a href="/word">Word Frequency</a></li>
+          <li><a href="/force">Retweet Map</a></li>
+          </ul>
+          </li>
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                User Info
+               <b class="caret"></b>
+           </a>
+          <ul class="dropdown-menu">
+          <li><a href="#">Tweets</a></li>
+          <li><a href="#">Profile</a></li>
+          </ul>
+          </li>
+          </ul>
+      </div>
+      <div class="span10">
+          {% block content %}{% endblock %}
+      </div>
+    </div>
+    <hr>
+    <div class="footer">
+    <p>&copy; Matthew Pancia 2014</p>
+    </div>
+    </div>
+
+  </body>
+</html>
