@@ -41,17 +41,17 @@ def letter():
     consumer_secret = environ.get('c_sec')
     access_token_key = environ.get('a_key')
     access_token_secret = environ.get('a_sec')
-	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
-	auth.set_access_token(access_token_key, access_token_secret)
-	api = tweepy.API(auth, secure=True)
-	freq = freq_to_df(letter_freq(api,session['handle']))
-	freq = freq.ix[freq.letter != ' ']
-	freq = freq.ix[freq.letter != '' ]
-	freq = freq.ix[freq.letter != '"' ]
-	freq = freq.sort('letter')
-	freq = freq.to_json(orient='records')
-	freq = freq[1:-1]
-	return render_template("letter.html", freq=freq)
+    auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+    auth.set_access_token(access_token_key, access_token_secret)
+    api = tweepy.API(auth, secure=True)
+    freq = freq_to_df(letter_freq(api,session['handle']))
+    freq = freq.ix[freq.letter != ' ']
+    freq = freq.ix[freq.letter != '' ]
+    freq = freq.ix[freq.letter != '"' ]
+    freq = freq.sort('letter')
+    freq = freq.to_json(orient='records')
+    freq = freq[1:-1]
+    return render_template("letter.html", freq=freq)
 
 @app.route('/word')
 def word():
