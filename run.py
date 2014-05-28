@@ -1,22 +1,23 @@
 from flask import Flask
 from flask import render_template, session, url_for, request, redirect
-import twitter
 import pandas as pd 
 import collections
 import os
 from os import environ 
+import tweepy
+import json 
 app = Flask(__name__)
 app.config.update(
     DEBUG = True,
 )
 def letter_freq(tweetStream, handle = "matty_books"):
-    user_timeline = tweetStream.GetUserTimeline(handle)
-    tweetString = str()
-    for tweet in user_timeline:
-        tweetString = tweetString + tweet.text.lower() + " "
-    counter = collections.Counter(tweetString)
-    n = sum(counter.values())
-    return {char.encode('ascii', 'ignore') : float(count) / n for char, count in counter.most_common() if char != ' ' and char != '@'}
+	data = tweetStream.user_timeline(handle, count=100)
+	tweetString = str()
+	for tweet in data:
+		tweetString = tweetString + tweet.text.lower() + " "
+		counter = collections.Counter(tweetString)
+		n = sum(counter.values())
+		return {char.encode('ascii', 'ignore') : float(count) / n for char, count in counter.most_common() if char != ' ' and char != '@'}
 
 def freq_to_df(freq):
     return pd.DataFrame(freq.items(), columns = ['letter', 'frequency'])
@@ -36,11 +37,17 @@ def login():
 
 @app.route('/letter')
 def letter():
-	api = twitter.Api(consumer_key=environ.get('APP_KEY'), consumer_secret=environ.get('APP_SECRET'), access_token_key=environ.get('AUTH_ID'), access_token_secret=environ.get('AUTH_SECRET'))
+	consumer_key = "X2Qw3oCsdJU4dOAutp7YvcKtt"
+	consumer_secret = "HNL9vmyLdZzu3qdCOxJJnV2TFsLgBW6HF0w9oZoC3DJj7F20fi"
+	access_token_key = "7347722-ftelor3qDGmCOHTkefzR6Ku5YXinzZ3TmVB5Zdj2qv"
+	access_token_secret = "Uxm3qM6yoiqiSp5X3MlR3whpDX6Kqf0k78ujSJG3aTwx9"
+	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+	auth.set_access_token(access_token_key, access_token_secret)
+	api = tweepy.API(auth, secure=True)
 	freq = freq_to_df(letter_freq(api,session['handle']))
-	freq = freq[freq.letter != ' ']
-	freq = freq[freq.letter != '' ]
-	freq = freq[freq.letter != '"' ]
+	freq = freq.ix[freq.letter != ' ']
+	freq = freq.ix[freq.letter != '' ]
+	freq = freq.ix[freq.letter != '"' ]
 	freq = freq.sort('letter')
 	freq = freq.to_json(orient='records')
 	freq = freq[1:-1]
