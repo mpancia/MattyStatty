@@ -1,10 +1,12 @@
-from app import app
-from flask import render_template, session, url_for, request, redirect
+from flask import Flask, render_template, session, url_for, request, redirect
 from twython import Twython	
 import pandas as pd 
 import collections
-from os import environ
-
+import os
+app = Flask(__name__)
+app.config.update(
+    DEBUG = True,
+)
 def letter_freq(tweetStream, handle = "matty_books"):
     user_timeline = tweetStream.get_user_timeline(screen_name=handle)
     tweetString = str()
