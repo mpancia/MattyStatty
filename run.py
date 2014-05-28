@@ -1,5 +1,5 @@
 from flask import Flask, render_template, session, url_for, request, redirect
-from twython import Twython	
+import twitter
 import pandas as pd 
 import collections
 import os
@@ -9,10 +9,10 @@ app.config.update(
     DEBUG = True,
 )
 def letter_freq(tweetStream, handle = "matty_books"):
-    user_timeline = tweetStream.get_user_timeline(screen_name=handle)
+    user_timeline = tweetStream.GetUserTimeline(handle)
     tweetString = str()
     for tweet in user_timeline:
-        tweetString = tweetString + tweet['text'].lower() + " "
+        tweetString = tweetString + tweet.text.lower() + " "
     counter = collections.Counter(tweetString)
     n = sum(counter.values())
     return {char.encode('ascii', 'ignore') : float(count) / n for char, count in counter.most_common() if char != ' ' and char != '@'}
@@ -35,8 +35,8 @@ def login():
 
 @app.route('/letter')
 def letter():
-	twitter = Twython(environ.get('APP_KEY'), environ.get('APP_SECRET'), environ.get('AUTH_ID'), environ.get('AUTH_SECRET'))
-	freq = freq_to_df(letter_freq(twitter,session['handle']))
+	api = twitter.Api(consumer_key=environ.get('APP_KEY'), consumer_secret=environ.get('APP_SECRET'), access_token_key=environ.get('AUTH_ID'), access_token_secret=environ.get('AUTH_SECRET'))
+	freq = freq_to_df(letter_freq(api,session['handle']))
 	freq = freq[freq.letter != ' ']
 	freq = freq[freq.letter != '' ]
 	freq = freq[freq.letter != '"' ]
