@@ -37,10 +37,10 @@ def login():
 
 @app.route('/letter')
 def letter():
-	consumer_key = "X2Qw3oCsdJU4dOAutp7YvcKtt"
-	consumer_secret = "HNL9vmyLdZzu3qdCOxJJnV2TFsLgBW6HF0w9oZoC3DJj7F20fi"
-	access_token_key = "7347722-ftelor3qDGmCOHTkefzR6Ku5YXinzZ3TmVB5Zdj2qv"
-	access_token_secret = "Uxm3qM6yoiqiSp5X3MlR3whpDX6Kqf0k78ujSJG3aTwx9"
+    consumer_key = environ.get('c_key')
+    consumer_secret = environ.get('c_sec')
+    access_token_key = environ.get('a_key')
+    access_token_secret = environ.get('a_sec')
 	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
 	auth.set_access_token(access_token_key, access_token_secret)
 	api = tweepy.API(auth, secure=True)
