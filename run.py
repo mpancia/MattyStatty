@@ -3,6 +3,7 @@ from twython import Twython
 import pandas as pd 
 import collections
 import os
+from os import environ 
 app = Flask(__name__)
 app.config.update(
     DEBUG = True,
