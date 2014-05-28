@@ -1,4 +1,5 @@
-from flask import Flask, render_template, session, url_for, request, redirect
+from flask import Flask
+from flask import render_template, session, url_for, request, redirect
 import twitter
 import pandas as pd 
 import collections
