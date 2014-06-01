@@ -62,6 +62,23 @@ def word():
 def force():
 	return render_template("force.html")
 
+@app.route('/info')
+def info():
+	return render_template("info.html")
+
+@app.route('/tweets')
+def tweetpage():
+	consumer_key = environ.get('c_key')
+	consumer_secret = environ.get('c_sec')
+	access_token_key = environ.get('a_key')
+	access_token_secret = environ.get('a_sec')
+	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+	auth.set_access_token(access_token_key, access_token_secret)
+	api = tweepy.API(auth, secure=True)
+	timeline = api.user_timeline(screen_name = session['handle'], count = 100)
+	tweets = [{ 'text' : tweet.text} for tweet in timeline]
+	return render_template("tweets.html",tweets=tweets)	
+
 @app.before_request
 def set_client_session():
 	if 'handle' not in session:

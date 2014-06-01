@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if 'handle' not in session %}
+        <h2>You have not set a handle. <br></h2>
+        <h3><a href="/handle">Set a handle.</a></h3>
+  {% else %}
+  <script type="text/javascript">
+  var data = {{tweets|tojson|safe}};
+  var stuff = d3.select("#main");
+  stuff.selectAll("p")
+  .data(data)
+  .enter()
+  .append("p")
+  .text(function(d){return d.text;});
+
+  </script>
+  {% endif %}
+  {%endblock%}

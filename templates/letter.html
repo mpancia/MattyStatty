@@ -30,13 +30,11 @@
         <h2>You have not set a handle. <br></h2>
         <h3><a href="/handle">Set a handle.</a></h3>
 	{% else %}
-		<p id="click">Click to compare to normal.</p>
 		<script>
 		
 		var encodefreq = '{{freq}}';	
 		
 		var jfreq = $('<textarea/>').html(encodefreq).text();
-		console.log(jfreq)
 		var freq = jfreq.split('},');
 
 		for (var i = 0; i < freq.length-1; i++){ freq[i] = freq[i].concat("}");}
@@ -96,10 +94,7 @@
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.frequency); })
 		      .attr("height", function(d) { return height - y(d.frequency); });
-		  d3.select("#click").on("click", function(){
-
-		  	bars = svg.selectAll("rect").data
-		  });
+		  
 		function type(d) {
 		  d.frequency = +d.frequency;
 		  return d;
