@@ -28,9 +28,10 @@
 
 	</style>
     {% if session['handle'] == None %}
-        <h2>You have not set a handle. <br></h2>
-        <h3><a href="/handle">Set a handle.</a></h3>
+        <h2>you have not set a handle. <br></h2>
+        <h3><a href="/handle">set a handle.</a></h3>
 	{% else %}
+		<h2>frequency of letters in most recent tweets</h2><hr>
 		<script>
 		
 		var encodefreq = '{{freq}}';	

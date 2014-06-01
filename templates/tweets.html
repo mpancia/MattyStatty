@@ -4,6 +4,8 @@
         <h2>You have not set a handle. <br></h2>
         <h3><a href="/handle">Set a handle.</a></h3>
   {% else %}
+  <h2>here are some tweets from {{session['handle']}}</h2>
+  <hr>
   <script type="text/javascript">
   var data = {{tweets|tojson|safe}};
   var stuff = d3.select("#main");

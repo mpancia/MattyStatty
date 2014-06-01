@@ -27,9 +27,11 @@
 
 </style>
     {% if 'handle' not in session %}
-        <h2>You have not set a handle. <br></h2>
-        <h3><a href="/handle">Set a handle.</a></h3>
+        <h2>you have not set a handle. <br></h2>
+        <h3><a href="/handle">set a handle.</a></h3>
   {% else %}
+  <h2>frequency of top 20 words by count in most recent tweets</h2> 
+  <hr>
   <script type="text/javascript">
   var freq = {{freq|tojson|safe}};  
   freq = JSON.parse(freq)
