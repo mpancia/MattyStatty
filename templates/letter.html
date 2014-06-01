@@ -32,10 +32,15 @@
 	{% else %}
 		<p id="click">Click to compare to normal.</p>
 		<script>
+		
 		var encodefreq = '{{freq}}';	
+		
 		var jfreq = $('<textarea/>').html(encodefreq).text();
+		console.log(jfreq)
 		var freq = jfreq.split('},');
+
 		for (var i = 0; i < freq.length-1; i++){ freq[i] = freq[i].concat("}");}
+			
 		for (var i = 0; i < freq.length; i++){ freq[i] = JSON.parse(freq[i]);}
 
 		var margin = {top: 20, right: 20, bottom: 30, left: 60},
