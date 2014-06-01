@@ -7,7 +7,7 @@
 		d3.select("#loginbutton")
 		.attr("class", "active");
 	</script>
-	{% if 'handle' in session %}
+	{% if session['handle'] %}
 		<h3> current handle is {{session['handle']}}.</h3> <br><h4>change it if you like.</h4>
 	{%endif%}
 	<form method="post" action = "/" class="form-horizontal" role="form">
