@@ -16,12 +16,24 @@ def letter_freq(tweetStream, handle = "matty_books"):
 	tweetString = str()
 	for tweet in data:
 		tweetString = tweetString + tweet.text.lower() + " "
-		counter = collections.Counter(tweetString)
-		n = sum(counter.values())
+	counter = collections.Counter(tweetString)
+	n = sum(counter.values())
 	return {char.encode('ascii', 'ignore') : float(count) / n for char, count in counter.most_common() if char in string.lowercase}
 
 def freq_to_df(freq):
 	return pd.DataFrame(freq.items(), columns = ['letter', 'frequency'])
+
+def word_freq(tweetStream, handle="matty_books"):
+	data = tweetStream.user_timeline(screen_name=handle,count=100)
+	tweetString = str()
+	for tweet in data:
+		tweetString = tweetString + tweet.text.lower() + " "
+	tweetString = tweetString.split()
+	counter = collections.Counter(tweetString)
+	n = sum(counter.values())
+	return {char.encode('ascii', 'ignore') : float(count) / n for char, count in counter.most_common(20)}
+	
+
 
 app.secret_key = environ.get('global_secret')
 
@@ -56,7 +68,17 @@ def letter():
 
 @app.route('/word')
 def word():
-	return render_template("word.html")
+	consumer_key = environ.get('c_key')
+	consumer_secret = environ.get('c_sec')
+	access_token_key = environ.get('a_key')
+	access_token_secret = environ.get('a_sec')
+	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+	auth.set_access_token(access_token_key, access_token_secret)
+	api = tweepy.API(auth, secure=True)
+	freq = word_freq(api, session['handle'])
+	freq = pd.DataFrame(freq.items(), columns = ['word', 'frequency'])
+	freq = freq.to_json(orient='records')
+	return render_template("word.html", freq=freq)
 
 @app.route('/force')
 def force():
