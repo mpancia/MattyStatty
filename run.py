@@ -34,11 +34,15 @@ def freq_to_df(freq):
 	return pd.DataFrame(freq.items(), columns = ['letter', 'frequency'])
 
 def word_freq(tweetStream, handle="matty_books"):
+	badwords = ['a', 'the', 'of', 'rt', 'if', 'to', 'for', 'on', 'is', '/', '-', 'a', 'this', 'and']
 	data = tweetStream.user_timeline(screen_name=handle,count=200)
 	tweetString = str()
 	for tweet in data:
 		tweetString = tweetString + tweet.text.lower() + " "
 	tweetString = tweetString.split()
+	for word in tweetString:
+		if word in badwords or word[0] == '@':
+			tweetString.remove(word)
 	counter = collections.Counter(tweetString)
 	n = sum(counter.values())
 	return {char.encode('ascii', 'ignore') : float(count)  for char, count in counter.most_common(20)}

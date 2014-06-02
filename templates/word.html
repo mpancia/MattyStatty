@@ -30,7 +30,7 @@
         <h2>you have not set a handle. <br></h2>
         <h3><a href="/handle">set a handle.</a></h3>
   {% else %}
-  <h2>top 20 words by count in {{session['handle']}}'s most recent tweets</h2> 
+  <h2>(interesting) top words in {{session['handle']}}'s most recent tweets</h2> 
   <hr>
   <script type="text/javascript">
   var freq = {{freq|tojson|safe}};  
