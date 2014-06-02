@@ -91,10 +91,6 @@ def word():
 	freq = freq.to_json(orient='records')
 	return render_template("word.html", freq=freq)
 
-@app.route('/force')
-def force():
-	return render_template("force.html")
-
 @app.route('/info')
 def info():
 	consumer_key = environ.get('c_key')
