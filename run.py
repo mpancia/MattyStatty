@@ -98,8 +98,23 @@ def tweetpage():
 	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
 	auth.set_access_token(access_token_key, access_token_secret)
 	api = tweepy.API(auth, secure=True)
+	total =api.get_user(session['handle']).statuses_count
+	tweetlist = list()
 	timeline = api.user_timeline(screen_name = session['handle'], count = 200)
-	tweets = [{ 'text' : tweet.text} for tweet in timeline]
+	for i in timeline:
+		tweetlist.append(i)
+	total = total - 200
+	tweetlist.sort(key=lambda r : r.created_at, reverse=False)
+	latest_id = tweetlist[0].id - 1 
+	while total > 0:
+		timeline = api.user_timeline(screen_name = session['handle'], count = 200, max_id=(latest_id))
+		for i in timeline:
+			tweetlist.append(i)
+		total = total - 200
+		tweetlist.sort(key=lambda r : r.created_at, reverse=False)
+		latest_id = tweetlist[0].id - 1 
+	tweetlist.sort(key=lambda r : r.created_at, reverse=True)	
+	tweets = [{ 'text' : tweet.text} for tweet in tweetlist]
 	return render_template("tweets.html",tweets=tweets)	
 
 @app.before_request
