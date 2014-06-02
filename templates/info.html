@@ -5,8 +5,9 @@
         <h3><a href="/handle">Set a handle.</a></h3>
   {% else %}
   <script type="text/javascript">
-  
-
+  var tweets = {{jtweets|tojson|safe}};
+  console.log(tweets);
+  d3.select("#main").selectAll("p").data(tweets).enter().append("p").text(function(d){return d});
   </script>
   {% endif %}
   {%endblock%}

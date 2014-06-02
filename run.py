@@ -11,6 +11,16 @@ app = Flask(__name__)
 app.config.update(
 	DEBUG = True,
 )
+
+@classmethod
+def parse(cls, api, raw):
+	status = cls.first_parse(api, raw)
+	setattr(status, 'json', json.dumps(raw))
+	return status
+
+tweepy.models.Status.first_parse = tweepy.models.Status.parse
+tweepy.models.Status.parse = parse
+
 def letter_freq(tweetStream, handle = "matty_books"):
 	data = tweetStream.user_timeline(screen_name = handle, count = 100)
 	tweetString = str()
@@ -87,7 +97,15 @@ def force():
 
 @app.route('/info')
 def info():
-	return render_template("info.html")
+	consumer_key = environ.get('c_key')
+	consumer_secret = environ.get('c_sec')
+	access_token_key = environ.get('a_key')
+	access_token_secret = environ.get('a_sec')
+	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+	auth.set_access_token(access_token_key, access_token_secret)
+	api = tweepy.API(auth, secure=True)
+	jtweets = api.get_user(session['handle'])._json 
+	return render_template("info.html", jtweets = jtweets)
 
 @app.route('/tweets')
 def tweetpage():

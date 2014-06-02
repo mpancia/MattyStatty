@@ -6,16 +6,24 @@
   {% else %}
   <h2>here are some tweets from {{session['handle']}}</h2>
   <hr>
+  <table class=table table-striped table-hover>
+  <tbody id = "tableb">
+  </tbody>
+  </table>
   <script type="text/javascript">
-  var data = {{tweets|tojson|safe}};
   d3.select("#main").style("height", "300px");
   d3.select("#main").style("overflow", "scroll");
-  var stuff = d3.select("#main");
-  stuff.selectAll("p")
-  .data(data)
-  .enter()
-  .append("p")
-  .text(function(d){return d.text;});
+  var tbody = d3.select('#tableb');
+  var data = {{tweets|tojson|safe}};
+  var rows = tbody.selectAll("tr")
+  .data(data, function(d){
+  	return d.text;
+  });
+
+  rows.enter()
+  .append("tr")
+  .text(function(d) {return d.text;});
+
 
   </script>
   {% endif %}
