@@ -8,6 +8,8 @@
   <hr>
   <script type="text/javascript">
   var data = {{tweets|tojson|safe}};
+  d3.select("#main").style("height", "300px");
+  d3.select("#main").style("overflow", "scroll");
   var stuff = d3.select("#main");
   stuff.selectAll("p")
   .data(data)

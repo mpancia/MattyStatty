@@ -30,7 +30,7 @@
         <h2>you have not set a handle. <br></h2>
         <h3><a href="/handle">set a handle.</a></h3>
   {% else %}
-  <h2>frequency of top 20 words by count in most recent tweets</h2> 
+  <h2>top 20 words by count in {{session['handle']}}'s most recent tweets</h2> 
   <hr>
   <script type="text/javascript">
   var freq = {{freq|tojson|safe}};  
@@ -52,7 +52,7 @@
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left")
-        .ticks(10, "%");
+        .ticks(10);
 
     var svg = d3.select("#main").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -73,7 +73,7 @@
           .attr("x",0)
           .attr("dy", ".71em")
           .style("text-anchor", "end")
-          .text("Frequency");
+          .text("Count");
 
       svg.selectAll(".bar")
           .data(freq)

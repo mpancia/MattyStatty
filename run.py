@@ -24,14 +24,14 @@ def freq_to_df(freq):
 	return pd.DataFrame(freq.items(), columns = ['letter', 'frequency'])
 
 def word_freq(tweetStream, handle="matty_books"):
-	data = tweetStream.user_timeline(screen_name=handle,count=100)
+	data = tweetStream.user_timeline(screen_name=handle,count=200)
 	tweetString = str()
 	for tweet in data:
 		tweetString = tweetString + tweet.text.lower() + " "
 	tweetString = tweetString.split()
 	counter = collections.Counter(tweetString)
 	n = sum(counter.values())
-	return {char.encode('ascii', 'ignore') : float(count) / n for char, count in counter.most_common(20)}
+	return {char.encode('ascii', 'ignore') : float(count)  for char, count in counter.most_common(20)}
 	
 
 
@@ -61,7 +61,7 @@ def letter():
 	freq = freq.ix[freq.letter != ' ']
 	freq = freq.ix[freq.letter != '' ]
 	freq = freq.ix[freq.letter != '"' ]
-	freq = freq.sort('letter')
+	freq = freq.sort('frequency', ascending=False)
 	freq = freq.to_json(orient='records')
 	freq = freq[1:-1]
 	return render_template("letter.html", freq=freq)
@@ -77,6 +77,7 @@ def word():
 	api = tweepy.API(auth, secure=True)
 	freq = word_freq(api, session['handle'])
 	freq = pd.DataFrame(freq.items(), columns = ['word', 'frequency'])
+	freq = freq.sort('frequency', ascending=False)
 	freq = freq.to_json(orient='records')
 	return render_template("word.html", freq=freq)
 
@@ -97,7 +98,7 @@ def tweetpage():
 	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
 	auth.set_access_token(access_token_key, access_token_secret)
 	api = tweepy.API(auth, secure=True)
-	timeline = api.user_timeline(screen_name = session['handle'], count = 100)
+	timeline = api.user_timeline(screen_name = session['handle'], count = 200)
 	tweets = [{ 'text' : tweet.text} for tweet in timeline]
 	return render_template("tweets.html",tweets=tweets)	
 
