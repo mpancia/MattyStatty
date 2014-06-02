@@ -11,8 +11,14 @@
 }
   </style>
   <div class="jumbotron">
-  <h1>{{jtweets['screen_name']}}'s profile <img src="{{jtweets['profile_image_url']}}"></h1>
-  <p class="lead">Here's some stuff.</p>
+  <h1><a href="https://twitter.com/account/redirect_by_id/{{jtweets['id']}}">{{jtweets['screen_name']}}</a>'s profile <img src="{{jtweets['profile_image_url']}}"></h1>
+  <p class="lead"><b>description:</b> {{jtweets['description']}}<br>
+  <p class="lead"><b>ID:</b> {{jtweets['id']}}<br>
+  <p class="lead"><b>location:</b> {{jtweets['location']}}<br>
+  <p class="lead"><b>tweets:</b> {{jtweets['statuses_count']}}<br>
+  <p class="lead"><b>time zone:</b> {{jtweets['time_zone']}}<br>
+  <b></b>
+  </p>
   </div>
   {% endif %}
   {%endblock%}
