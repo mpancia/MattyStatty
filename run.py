@@ -9,7 +9,7 @@ import tweepy
 import json 
 app = Flask(__name__)
 app.config.update(
-	DEBUG = True,
+	DEBUG = False,
 )
 
 @classmethod
