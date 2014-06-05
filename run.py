@@ -51,8 +51,6 @@ def word_freq(tweetStream, handle="matty_books"):
 
 app.secret_key = environ.get('global_secret')
 
-
-
 @app.route('/handle')
 def login():
 	return render_template("login.html")
@@ -95,8 +93,7 @@ def word():
 @app.route('/info', methods=('GET', 'POST'))
 def info():
 	if request.method == 'POST':
-		session['handle'] = request.form.get("handle")
-	return render_template("index.html")	
+		session['handle'] = request.form.get("handle")	
 	consumer_key = environ.get('c_key')
 	consumer_secret = environ.get('c_sec')
 	access_token_key = environ.get('a_key')
