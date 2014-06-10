@@ -93,16 +93,22 @@ def word():
 @app.route('/info', methods=('GET', 'POST'))
 def info():
 	if request.method == 'POST':
-		session['handle'] = request.form.get("handle")	
-	consumer_key = environ.get('c_key')
-	consumer_secret = environ.get('c_sec')
-	access_token_key = environ.get('a_key')
-	access_token_secret = environ.get('a_sec')
-	auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
-	auth.set_access_token(access_token_key, access_token_secret)
-	api = tweepy.API(auth, secure=True)
-	jtweets = api.get_user(session['handle'])._json 
-	return render_template("info.html", jtweets = jtweets)
+		try:
+			session['handle'] = request.form.get("handle")
+		except tweey.error.TweepError:
+			pass
+	if session['handle'] != None:
+		consumer_key = environ.get('c_key')
+		consumer_secret = environ.get('c_sec')
+		access_token_key = environ.get('a_key')
+		access_token_secret = environ.get('a_sec')
+		auth = tweepy.OAuthHandler(consumer_key,consumer_secret)
+		auth.set_access_token(access_token_key, access_token_secret)
+		api = tweepy.API(auth, secure=True)
+		jtweets = api.get_user(session['handle'])._json 
+		return render_template("info.html", jtweets = jtweets)
+	else:
+		return render_template("index.html")
 
 @app.route('/tweets')
 def tweetpage():
@@ -139,4 +145,4 @@ def set_client_session():
 
 if __name__ == "__main__":
 	port = int(os.environ.get("PORT", 5000))
-	app.run(host='0.0.0.0', port=port, debug = True)
+	app.run(host='0.0.0.0', port=port, debug = False)
